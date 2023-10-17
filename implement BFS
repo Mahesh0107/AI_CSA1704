@@ -1,31 +1,25 @@
-from collections import deque
-
+print("BFS problem")
+print("Mahesh babu 192111329")
 graph = {
-    'A': ['B', 'C'],
-    'B': ['A', 'D', 'E'],
-    'C': ['A', 'F'],
-    'D': ['B'],
-    'E': ['B', 'F'],
-    'F': ['C', 'E']
+    'A': ['B', 'C', 'D'],
+    'B': ['A'],
+    'C': ['A', 'D'],
+    'D': ['A', 'C', 'E'],
+    'E': ['D'],
 }
-
-def bfs(graph, start):
-    visited = set()
-    queue = deque()
-    
-    visited.add(start)
-    queue.append(start)
+def bfs(node):
+    visited = [False] * (len(graph))
+    queue = []
+    visited.append(node)
+    queue.append(node)
 
     while queue:
-        node = queue.popleft()
-        print(node, end=' ')
-
-        for neighbor in graph[node]:
-            if neighbor not in visited:
-                visited.add(neighbor)
-                queue.append(neighbor)
-
+        v = queue.pop(0)
+        print(v, end=" ")
+        for neigh in graph[v]:
+            if neigh not in visited:
+                visited.append(neigh)
+                queue.append(neigh)
+print("The path is\n")
 if __name__ == "__main__":
-    start_node = 'A'
-    print("Breadth-First Search starting from node", start_node)
-    bfs(graph, start_node)
+    bfs('A')
