@@ -1,0 +1,33 @@
+from itertools import permutations
+
+def is_valid(puzzle, solution):
+    equation = puzzle.replace(' ', '')
+    for letter, digit in solution.items():
+        equation = equation.replace(letter, str(digit))
+    
+    try:
+        return eval(equation)
+    except (ZeroDivisionError, SyntaxError):
+        return False
+
+def solve_cryptarithmetic(puzzle):
+    letters = set(letter for letter in puzzle if letter.isalpha())
+    if len(letters) > 10:
+        print("There are more than 10 unique letters. This problem has no solution.")
+        return
+
+    digit_permutations = permutations(range(10), len(letters))
+
+    for perm in digit_permutations:
+        solution = {letter: digit for letter, digit in zip(letters, perm)}
+        if is_valid(puzzle, solution):
+            print("Solution found:")
+            for letter, digit in solution.items():
+                print(f"{letter} = {digit}")
+            return
+
+    print("No solution found.")
+
+if __name__ == "__main__":
+    puzzle = input("Enter the cryptarithmetic puzzle: ")
+    solve_cryptarithmetic(puzzle)
