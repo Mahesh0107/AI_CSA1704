@@ -1,0 +1,73 @@
+import random
+
+class VacuumCleaner:
+    def __init__(self, rows, columns):
+        self.rows = rows
+        self.columns = columns
+        self.grid = [[random.choice([True, False]) for _ in range(columns)] for _ in range(rows)]
+        self.current_position = (random.randint(0, rows - 1), random.randint(0, columns - 1))
+    
+    def is_dirty(self):
+        return self.grid[self.current_position[0]][self.current_position[1]]
+    
+    def clean(self):
+        self.grid[self.current_position[0]][self.current_position[1]] = False
+    
+    def move_left(self):
+        if self.current_position[1] > 0:
+            self.current_position = (self.current_position[0], self.current_position[1] - 1)
+    
+    def move_right(self):
+        if self.current_position[1] < self.columns - 1:
+            self.current_position = (self.current_position[0], self.current_position[1] + 1)
+    
+    def move_up(self):
+        if self.current_position[0] > 0:
+            self.current_position = (self.current_position[0] - 1, self.current_position[1])
+    
+    def move_down(self):
+        if self.current_position[0] < self.rows - 1:
+            self.current_position = (self.current_position[0] + 1, self.current_position[1])
+    
+    def clean_entire_room(self):
+        dirty_cells = sum(row.count(True) for row in self.grid)
+        while dirty_cells > 0:
+            if self.is_dirty():
+                self.clean()
+                dirty_cells -= 1
+            if self.current_position[1] % 2 == 0:  
+                if self.current_position[0] < self.rows - 1:
+                    self.move_down()
+                else:
+                    self.move_left()
+            else:
+                if self.current_position[0] > 0:
+                    self.move_up()
+                else:
+                    self.move_left()
+    
+    def print_room(self):
+        for i in range(self.rows):
+            for j in range(self.columns):
+                if (i, j) == self.current_position:
+                    print("V", end=" ") 
+                elif self.grid[i][j]:
+                    print("D", end=" ")  
+                else:
+                    print("-", end=" ") 
+            print()
+        print()
+
+if __name__ == "__main":
+    rows = 5
+    columns = 5
+    
+    vacuum_cleaner = VacuumCleaner(rows, columns)
+    
+    print("Initial room state:")
+    vacuum_cleaner.print_room()
+    
+    vacuum_cleaner.clean_entire_room()
+    
+    print("Room after cleaning:")
+    vacuum_cleaner.print_room()
