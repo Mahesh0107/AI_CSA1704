@@ -1,30 +1,23 @@
+print("Mahesh babu 192111329")
+print(" DFS problem")
+import collections
+def dfs(graph, start, visited=None):
+    if visited is None:
+        visited = set()
+    visited.add(start)
 
-graph = {}
+    print(start)
 
-def add_edge(graph, u, v):
-    if u in graph:
-        graph[u].append(v)
-    else:
-        graph[u] = [v]
+    for next in graph[start] - visited:
+        dfs(graph, next, visited)
+    return visited
 
-def dfs(graph, node, visited):
-    visited.add(node)
-    print(node, end=' ')
 
-    if node in graph:
-        for neighbor in graph[node]:
-            if neighbor not in visited:
-                dfs(graph, neighbor, visited)
+graph = {'0': set(['1', '2']),
+         '1': set(['0', '3', '4']),
+         '2': set(['0']),
+         '3': set(['1']),
+         '4': set(['2', '3'])}
 
-if __name__ == "__main__":
-    num_edges = int(input("Enter the number of edges: "))
 
-    for _ in range(num_edges):
-        u, v = input("Enter edge (u v): ").split()
-        add_edge(graph, u, v)
-
-    start_node = input("Enter the starting node: ")
-
-    visited = set()
-    print("Depth-First Search starting from node", start_node)
-    dfs(graph, start_node, visited)
+dfs(graph, '0')
